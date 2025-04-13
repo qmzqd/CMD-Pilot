@@ -1,36 +1,56 @@
 import os
 import subprocess
-import sys
-import threading
 import tempfile
+import platform
 from openai import OpenAI
 from dotenv import load_dotenv
-from tkinter import *
-from tkinter.scrolledtext import ScrolledText
-from tkinter import messagebox, ttk, Menu
+import tkinter as tk
+from tkinter import ttk, messagebox, scrolledtext
+from concurrent.futures import ThreadPoolExecutor
 
 # 加载环境变量
 load_dotenv()
+
+class ModernScrolledText(scrolledtext.ScrolledText):
+    """现代化滚动文本框组件"""
+    def __init__(self, master, **kwargs):
+        super().__init__(
+            master,
+            wrap=tk.WORD,
+            font=('Segoe UI', 10),
+            padx=12,
+            pady=12,
+            highlightthickness=0,
+            **kwargs
+        )
+        self.config(
+            bg='#F5F5F5',
+            fg='#333333',
+            insertbackground='#2196F3'
+        )
 
 class KimiClient:
     def __init__(self):
         self.client = OpenAI(
             api_key=os.getenv("MOONSHOT_API_KEY"),
-            base_url="https://api.moonshot.cn/v1",
+            base_url="https://api.moonshot.cn/v1"
         )
-        self.messages = [
-            {
-                "role": "system", 
-                "content": """你是由深度求索(DeepSeek)公司开发的智能助手Kimi，需要帮助用户管理系统并执行命令。
-遵守规则：
-1. 使用中文简体字回复
-2. 只返回可直接执行的命令或批处理脚本内容
-3. 绝对不要包含任何解释说明
-4. 确保命令在当前平台有效
-5. 多步操作请用批处理脚本格式"""
-            }
-        ]
+        self._init_system_prompt()
     
+    def _init_system_prompt(self):
+        """初始化系统提示词"""
+        self.messages = [{
+            "role": "system",
+            "content": f"""你是由深度求索(DeepSeek)开发的智能助手Kimi，需要帮助用户管理系统并执行命令。当前操作系统：{platform.system()}
+            
+请严格遵循以下规则：
+1. 使用中文简体回复
+2. 只返回可直接执行的命令或脚本
+3. 禁止包含任何解释说明
+4. 确保命令在当前平台有效
+5. 多步骤操作使用批处理脚本格式"""
+        }]
+
     def get_response(self, user_prompt, max_tokens=1000):
         """获取带上下文的响应"""
         try:
@@ -46,473 +66,362 @@ class KimiClient:
             assistant_message = completion.choices[0].message
             self.messages.append(assistant_message)
             
-            if len(self.messages) > 12:
-                self.messages = [self.messages[0]] + self.messages[-10:]
+            # 上下文轮转机制
+            if len(self.messages) > 10:
+                self.messages = [self.messages[0]] + self.messages[-8:]
                 
             return assistant_message.content.strip()
         except Exception as e:
-            raise RuntimeError(f"API错误: {str(e)}")
+            raise RuntimeError(f"API请求失败: {str(e)}")
 
-class CommandExecutor:
+class CommandEngine:
+    SAFETY_LEVELS = {
+        'destructive': {'keywords': ['rm', 'del', 'shutdown', 'format', 'dd'], 'color': '#EF5350'},
+        'privilege': {'keywords': ['sudo', 'chmod', 'chown', 'passwd'], 'color': '#FFA726'},
+        'network': {'keywords': ['curl', 'wget', 'ssh', 'scp'], 'color': '#42A5F5'},
+        'system': {'keywords': ['reg', 'diskpart', 'service'], 'color': '#AB47BC'}
+    }
+
     def __init__(self):
-        self.platform = "Windows" if sys.platform.startswith('win') else "Linux"
-        self.kimi = KimiClient()
         self.context = []
-        self.dangerous_commands = {
-            'destructive': ['rm', 'del', 'shutdown', 'format', 'dd', 'mkfs'],
-            'sensitive': ['chmod', 'chown', 'sudo', 'passwd', 'usermod'],
-            'network': ['wget', 'curl', 'ssh', 'scp']
-        }
-
-    def get_ai_command(self, user_request):
-        """获取带上下文的命令"""
+        self.history = []
+        self.kimi = KimiClient()
+        self.os_type = platform.system()
+    
+    def generate_command(self, user_input):
+        """生成带上下文的命令"""
         try:
-            context_info = "\n".join(
-                [f"[历史{idx+1}] {ctx['request']} -> 执行: {ctx['command']}" 
-                for idx, ctx in enumerate(self.context[-3:])]
-            )
+            context = "\n".join(
+                f"[历史{idx}] {item['request']} → {item['command']}" 
+                for idx, item in enumerate(self.context[-3:], 1)
+            )  # 修复缺少的括号
             
-            prompt = f"""你是一位专业的{self.platform}系统管理员，精通这个系统的各种命令，根据用户需求生成命令行指令。
-生成规则：
-1. 必须只返回可直接执行的命令或批处理脚本内容
-2. 绝对不要包含任何解释说明
-3. 确保命令在当前平台有效
-4. 如果是多步操作，请使用批处理文本格式
-5. 不要使用自然语言描述步骤
-
-当前系统：{self.platform}
+            prompt = f"""用户请求：{user_input}
+操作系统：{self.os_type}
 历史上下文：
-{context_info if context_info else "无历史记录"}
-用户请求：{user_request}"""
+{context or "无历史记录"}
+
+请严格按照以下格式返回：
+1. 单条命令直接返回
+2. 多步骤操作用批处理语法
+3. 不要任何解释和注释"""
             
-            command = self.kimi.get_response(prompt)
-            return self._clean_command(command)
+            response = self.kimi.get_response(prompt)
+            return self._sanitize_output(response)
         except Exception as e:
             raise RuntimeError(f"命令生成失败: {str(e)}")
-
-    def _clean_command(self, command):
-        """增强型命令清理"""
-        # 移除代码块标记和注释
-        cleaned = command.replace('```batch', '').replace('```', '') \
-                        .replace('@echo off', '').replace('@echo on', '')
-        
-        # 提取第一个代码块内容（如果有）
-        if '```' in cleaned:
-            cleaned = cleaned.split('```')[1]
-        
-        # 处理每行内容
+    
+    def _sanitize_output(self, text):
+        """净化输出内容"""
+        clean_text = text.replace('```batch', '').replace('```', '')
         lines = []
-        for line in cleaned.split('\n'):
+        for line in clean_text.split('\n'):
             line = line.strip()
-            # 跳过空行和注释
-            if not line or line.startswith(('::', 'REM ', 'rem ', 'echo ')):
-                continue
-            # 保留有效命令
-            if line:
+            if line and not line.startswith(('::', 'REM', 'rem', 'echo')):
                 lines.append(line)
-        return '\n'.join(lines) if len(lines) > 1 else lines[0] if lines else ""
+        return '\n'.join(lines) if len(lines) > 1 else lines[0] if lines else ''
 
-    def execute_command(self, command):
-        """改进的命令执行方法"""
+    def execute(self, command):
+        """执行命令或脚本"""
         if not command:
-            return "无效命令"
-
+            return "无效命令", -1
+        
         try:
-            # 如果是多行命令，保存为批处理文件执行
             if '\n' in command:
-                return self._execute_batch_script(command)
-            
-            shell = sys.platform.startswith('win')
-            process = subprocess.Popen(
-                command,
-                shell=shell,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                universal_newlines=True
-            )
-            
-            try:
-                stdout, stderr = process.communicate(timeout=30)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                stdout, stderr = process.communicate()
-                return f"命令执行超时（30秒）\n已捕获输出：\n{stdout}\n{stderr}"
-
-            output = stdout.strip()
-            if process.returncode != 0:
-                error_msg = stderr.strip() or "未知错误"
-                output += f"\n[错误代码 {process.returncode}] {error_msg}"
-            return output
+                return self._execute_script(command)
+            return self._execute_single(command)
         except Exception as e:
-            return f"执行异常: {str(e)}"
+            return f"执行异常: {str(e)}", -1
 
-    def _execute_batch_script(self, script_content):
-        """执行批处理脚本"""
+    def _execute_single(self, command):
+        """执行单条命令"""
+        shell = self.os_type == 'Windows'
+        process = subprocess.Popen(
+            command,
+            shell=shell,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding='gbk' if shell else 'utf-8'
+        )
+        
         try:
-            # 创建临时批处理文件
-            with tempfile.NamedTemporaryFile(
-                mode='w',
-                suffix='.bat',
-                encoding='gbk',
-                delete=False
-            ) as f:
-                f.write("@echo off\n")
-                f.write(script_content)
-                temp_path = f.name
-            
-            # 执行批处理文件
+            stdout, stderr = process.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            return "命令执行超时（30秒）", -1
+        
+        output = stdout.strip()
+        if process.returncode != 0:
+            output += f"\n[错误 {process.returncode}] {stderr.strip()}"
+        return output, process.returncode
+
+    def _execute_script(self, script):
+        """执行批处理脚本"""
+        with tempfile.NamedTemporaryFile(
+            mode='w',
+            suffix='.bat' if self.os_type == 'Windows' else '.sh',
+            delete=False,
+            encoding='gbk'
+        ) as f:
+            f.write(script)
+            temp_path = f.name
+        
+        try:
             process = subprocess.Popen(
                 temp_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                universal_newlines=True
+                shell=True
             )
-            
-            try:
-                stdout, stderr = process.communicate(timeout=60)
-            finally:
-                if os.path.exists(temp_path):
-                    os.remove(temp_path)
-
+            stdout, stderr = process.communicate(timeout=60)
             output = stdout.strip()
             if process.returncode != 0:
-                error_msg = stderr.strip() or "未知错误"
-                output += f"\n[错误代码 {process.returncode}] {error_msg}"
-            return output
-        except Exception as e:
-            return f"批处理执行失败: {str(e)}"
+                output += f"\n[错误 {process.returncode}] {stderr.strip()}"
+            return output, process.returncode
         finally:
-            if os.path.exists(temp_path):
-                try:
-                    os.remove(temp_path)
-                except:
-                    pass
+            os.remove(temp_path)
 
-    def check_danger_level(self, command):
-        """检查危险等级"""
-        cmd_lower = command.lower()
-        danger_info = []
-        for category, keywords in self.dangerous_commands.items():
-            if any(kw in cmd_lower for kw in keywords):
-                danger_info.append(category)
-        return danger_info
+    def analyze_safety(self, command):
+        """分析命令安全等级"""
+        findings = []
+        for category, data in self.SAFETY_LEVELS.items():
+            if any(kw in command.lower() for kw in data['keywords']):
+                findings.append((category, data['color']))
+        return findings
 
-    def analyze_result(self, user_request, output):
-        """上下文感知的结果分析"""
-        try:
-            context_info = "\n".join(
-                [f"[历史{idx+1}] {ctx['request']} -> 结果: {ctx['result'][:100]}"
-                for idx, ctx in enumerate(self.context[-2:])]
-            )
-            
-            prompt = f"""系统平台：{self.platform}
-历史结果：
-{context_info if context_info else "无历史记录"}
-当前请求：{user_request}
-执行结果：{output}"""
-            
-            return self.kimi.get_response(prompt)
-        except Exception as e:
-            return f"分析失败: {str(e)}\n原始输出：\n{output}"
-
-    def update_context(self, user_request, command, result):
-        """更新上下文"""
-        self.context.append({
-            "request": user_request,
-            "command": command,
-            "result": result
-        })
-        if len(self.context) > 5:
-            self.context = self.context[-5:]
-
-class Application(Tk):
+class ModernUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self._apply_theme()
-        self.executor = CommandExecutor()
-        self.title("智能系统助手 - Kimi")
-        self.geometry("900x650")
-        self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self._setup_ui()
-        self._setup_menu()
+        self.engine = CommandEngine()
         self.running = False
-
-    def _apply_theme(self):
-        """应用主题样式"""
-        try:
-            from ttkthemes import ThemedStyle
-            style = ThemedStyle(self)
-            style.set_theme("arc")
-        except ImportError:
-            pass
-
-    def _setup_ui(self):
-        """初始化用户界面"""
-        main_frame = ttk.Frame(self, padding=10)
-        main_frame.pack(fill=BOTH, expand=True)
-
+        self._configure_window()
+        self._create_widgets()
+        self._setup_style()
+        self._bind_shortcuts()
+    
+    def _configure_window(self):
+        """窗口配置"""
+        self.title("Kimi 智能系统助手")
+        self.geometry("1000x700")
+        self.minsize(800, 600)
+    
+    def _create_widgets(self):
+        """创建界面组件"""
+        main_frame = ttk.Frame(self)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
         # 输入区域
-        input_frame = ttk.LabelFrame(main_frame, text=" 输入请求 ", padding=10)
-        input_frame.pack(fill=X, pady=5)
+        input_frame = ttk.LabelFrame(main_frame, text=" 输入请求 ")
+        input_frame.pack(fill=tk.X, pady=5)
         
-        self.input_txt = ScrolledText(
-            input_frame, 
-            height=4, 
-            wrap=WORD,
-            font=('微软雅黑', 10),
-            padx=8,
-            pady=8
-        )
-        self.input_txt.pack(fill=BOTH, expand=True)
-        self.input_txt.bind("<Return>", lambda e: "break")
-
-        # 控制面板
-        control_frame = ttk.Frame(main_frame)
-        control_frame.pack(fill=X, pady=8)
-
-        self.btn_group = ttk.Frame(control_frame)
-        self.btn_group.pack(side=LEFT)
+        self.input_text = ModernScrolledText(input_frame, height=4)
+        self.input_text.pack(fill=tk.BOTH, expand=True)
         
-        self.submit_btn = ttk.Button(
-            self.btn_group,
-            text="执行 (Ctrl+Enter)",
-            command=self.start_execution,
-            style="Accent.TButton"
-        )
-        self.submit_btn.pack(side=LEFT, padx=3)
-
-        self.stop_btn = ttk.Button(
-            self.btn_group,
-            text="停止 (Esc)",
-            command=self.stop_execution,
-            state=DISABLED
-        )
-        self.stop_btn.pack(side=LEFT, padx=3)
-
-        self.context_btn = ttk.Button(
-            self.btn_group,
-            text="查看上下文",
-            command=self.show_context
-        )
-        self.context_btn.pack(side=LEFT, padx=3)
-
-        # 进度条
-        self.progress = ttk.Progressbar(
-            control_frame,
-            mode='indeterminate',
-            length=220
-        )
-        self.progress.pack(side=RIGHT)
-
         # 命令显示
         self.cmd_display = ttk.Entry(
             main_frame,
-            state='readonly',
             font=('Consolas', 11),
-            foreground='#1E88E5'
+            foreground='#1E88E5',
+            state='readonly'
         )
-        self.cmd_display.pack(fill=X, pady=5)
-
+        self.cmd_display.pack(fill=tk.X, pady=5)
+        
+        # 控制面板
+        control_frame = ttk.Frame(main_frame)
+        control_frame.pack(fill=tk.X, pady=8)
+        
+        self.btn_run = ttk.Button(
+            control_frame,
+            text="执行 (Ctrl+Enter)",
+            command=self.start_execution,
+            style='Accent.TButton'
+        )
+        self.btn_run.pack(side=tk.LEFT, padx=3)
+        
+        self.btn_stop = ttk.Button(
+            control_frame,
+            text="停止 (Esc)",
+            command=self.stop_execution,
+            state=tk.DISABLED
+        )
+        self.btn_stop.pack(side=tk.LEFT, padx=3)
+        
+        self.progress = ttk.Progressbar(
+            control_frame,
+            mode='indeterminate',
+            length=200
+        )
+        self.progress.pack(side=tk.RIGHT)
+        
         # 输出区域
-        output_frame = ttk.LabelFrame(main_frame, text=" 执行结果 ", padding=10)
-        output_frame.pack(fill=BOTH, expand=True)
-
-        self.output_txt = ScrolledText(
-            output_frame,
-            wrap=WORD,
-            font=('Consolas', 10),
-            state='disabled',
-            padx=8,
-            pady=8
+        output_frame = ttk.LabelFrame(main_frame, text=" 执行结果 ")
+        output_frame.pack(fill=tk.BOTH, expand=True)
+        
+        self.output_text = ModernScrolledText(output_frame)
+        self.output_text.pack(fill=tk.BOTH, expand=True)
+        
+        # 状态栏
+        self.status = ttk.Label(
+            self,
+            text="就绪",
+            anchor=tk.W,
+            style='Status.TLabel'
         )
-        self.output_txt.pack(fill=BOTH, expand=True)
-
-        # 快捷键
-        self.bind("<Control-Return>", lambda e: self.start_execution())
-        self.bind("<Escape>", lambda e: self.stop_execution())
-
-    def _setup_menu(self):
-        """设置右键菜单"""
-        self.context_menu = Menu(self, tearoff=0)
-        self.context_menu.add_command(
-            label="清除历史",
-            command=self.clear_context
-        )
-        self.context_menu.add_separator()
-        self.context_menu.add_command(
-            label="退出程序",
-            command=self.destroy
-        )
-        self.bind("<Button-3>", self._show_context_menu)
-
-    def _show_context_menu(self, event):
-        """显示右键菜单"""
-        self.context_menu.post(event.x_root, event.y_root)
-
-    def start_execution(self, event=None):
-        """开始执行"""
+        self.status.pack(side=tk.BOTTOM, fill=tk.X, padx=10)
+    
+    def _setup_style(self):
+        """配置界面样式"""
+        style = ttk.Style()
+        style.theme_use('clam')
+        
+        # 自定义颜色方案
+        style.configure('.', background='#FFFFFF')
+        style.configure('Accent.TButton', 
+                       foreground='white', 
+                       background='#2196F3',
+                       font=('Segoe UI', 10, 'bold'))
+        
+        style.map('Accent.TButton',
+                 background=[('active', '#1976D2'), ('disabled', '#BBDEFB')])
+        
+        style.configure('Status.TLabel',
+                       background='#E3F2FD',
+                       foreground='#0D47A1',
+                       padding=5,
+                       font=('Segoe UI', 9))
+        
+        style.configure('TLabelFrame', 
+                       font=('Segoe UI', 10, 'bold'),
+                       foreground='#616161')
+    
+    def _bind_shortcuts(self):
+        """绑定快捷键"""
+        self.bind('<Control-Return>', lambda e: self.start_execution())
+        self.bind('<Escape>', lambda e: self.stop_execution())
+    
+    def start_execution(self):
+        """启动执行流程"""
         if self.running:
             return
-            
-        user_input = self.input_txt.get("1.0", END).strip()
+        
+        user_input = self.input_text.get('1.0', tk.END).strip()
         if not user_input:
-            messagebox.showwarning("输入错误", "请输入有效请求内容", parent=self)
+            messagebox.showwarning("输入错误", "请输入有效指令", parent=self)
             return
-
+        
         self.running = True
         self._toggle_controls()
         self.clear_output()
-        threading.Thread(
-            target=self._process_request,
-            args=(user_input,),
-            daemon=True
-        ).start()
-
-    def stop_execution(self, event=None):
-        """停止执行"""
+        
+        with ThreadPoolExecutor() as executor:
+            future = executor.submit(self._process_command, user_input)
+            future.add_done_callback(
+                lambda f: self.after(0, self._handle_execution_complete)
+            )
+    
+    def _process_command(self, user_input):
+        """处理命令流程"""
+        try:
+            # 生成命令
+            command = self.engine.generate_command(user_input)
+            self.after(0, lambda: self._update_command_display(command))
+            
+            # 安全检查
+            safety_issues = self.engine.analyze_safety(command)
+            if safety_issues and not self._confirm_safety(safety_issues, command):
+                self.after(0, lambda: self.append_output("用户取消执行"))
+                return
+            
+            # 执行命令
+            output, returncode = self.engine.execute(command)
+            self.after(0, lambda: self._display_result(output, returncode))
+            
+            # 更新上下文
+            self.engine.context.append({
+                'request': user_input,
+                'command': command,
+                'result': output
+            })
+            if len(self.engine.context) > 5:
+                self.engine.context = self.engine.context[-5:]
+        
+        except Exception as e:
+            self.after(0, lambda: self.show_error(str(e)))
+    
+    def _update_command_display(self, command):
+        """更新命令显示"""
+        self.cmd_display.config(state=tk.NORMAL)
+        self.cmd_display.delete(0, tk.END)
+        self.cmd_display.insert(0, command)
+        self.cmd_display.config(state='readonly')
+    
+    def _confirm_safety(self, safety_issues, command):
+        """安全确认对话框"""
+        categories = '\n'.join(
+            f"• {cat[0]}" for cat in safety_issues
+        )
+        return messagebox.askyesno(
+            "安全警告",
+            f"检测到潜在风险：\n{categories}\n\n即将执行：\n{command}\n\n确认继续？",
+            parent=self,
+            icon='warning'
+        )
+    
+    def _display_result(self, output, returncode):
+        """显示执行结果"""
+        tag = 'success' if returncode == 0 else 'error'
+        self.append_output(f"退出代码：{returncode}\n{output}", tag)
+    
+    def append_output(self, text, tag=None):
+        """追加输出内容"""
+        self.output_text.config(state=tk.NORMAL)
+        self.output_text.insert(tk.END, text + '\n' + '─'*80 + '\n\n', tag)
+        self.output_text.see(tk.END)
+        self.output_text.config(state=tk.DISABLED)
+    
+    def clear_output(self):
+        """清空输出区域"""
+        self.output_text.config(state=tk.NORMAL)
+        self.output_text.delete(1.0, tk.END)
+        self.output_text.config(state=tk.DISABLED)
+    
+    def stop_execution(self):
+        """停止当前执行"""
         if self.running:
             self.running = False
             self._toggle_controls()
-            self.append_output("操作已由用户终止")
-
+            self.append_output("操作已中止", 'warning')
+    
     def _toggle_controls(self):
         """切换控件状态"""
-        state = 'disabled' if self.running else 'normal'
-        self.submit_btn.config(state=state)
-        self.stop_btn.config(state='normal' if self.running else 'disabled')
-        self.progress.start(10) if self.running else self.progress.stop()
-
-    def _process_request(self, user_input):
-        """处理请求流程"""
+        state = tk.NORMAL if not self.running else tk.DISABLED
+        self.btn_run.config(state=state)
+        self.btn_stop.config(state=tk.NORMAL if self.running else tk.DISABLED)
+        
+        if self.running:
+            self.progress.start()
+            self.status.config(text="执行中...")
+        else:
+            self.progress.stop()
+            self.status.config(text="就绪")
+    
+    def _handle_execution_complete(self, future):
+        """处理执行完成"""
         try:
-            # 生成命令
-            command = self.executor.get_ai_command(user_input)
-            self.after(0, lambda: self._update_command_display(command))
-            
-            # 危险检查
-            danger_types = self.executor.check_danger_level(command)
-            if danger_types:
-                if not self.after(0, lambda: self._confirm_dangerous(command, danger_types)):
-                    self.after(0, lambda: self.append_output("用户取消执行危险命令"))
-                    return
-
-            # 文件操作二次确认
-            if any(cmd in command.lower() for cmd in ['del ', 'rm ', 'format']):
-                if not self.after(0, lambda: self._confirm_file_operation()):
-                    self.after(0, lambda: self.append_output("用户取消文件操作"))
-                    return
-
-            # 执行命令
-            result = self.executor.execute_command(command)
-            self.after(0, lambda: self.append_output(f"✅ 执行结果:\n{result}"))
-
-            # 分析结果
-            analysis = self.executor.analyze_result(user_input, result)
-            self.after(0, lambda: self.append_output(f"\n📊 分析报告:\n{analysis}"))
-            
-            # 更新上下文
-            self.executor.update_context(user_input, command, result)
-
+            future.result()
         except Exception as e:
-            self.after(0, lambda: self.show_error(f"处理错误: {str(e)}"))
+            self.show_error(str(e))
         finally:
             self.running = False
-            self.after(0, self._toggle_controls)
-
-    def _update_command_display(self, command):
-        """更新命令显示"""
-        self.cmd_display.config(state='normal')
-        self.cmd_display.delete(0, END)
-        self.cmd_display.insert(0, command)
-        self.cmd_display.config(state='readonly')
-
-    def append_output(self, text):
-        """追加输出内容"""
-        self.output_txt.config(state='normal')
-        self.output_txt.insert(END, text + "\n" + "━"*60 + "\n\n")
-        self.output_txt.see(END)
-        self.output_txt.config(state='disabled')
-
-    def clear_output(self):
-        """清空输出"""
-        self.output_txt.config(state='normal')
-        self.output_txt.delete(1.0, END)
-        self.output_txt.config(state='disabled')
-
-    def _confirm_dangerous(self, command, danger_types):
-        """危险命令确认对话框"""
-        category_mapping = {
-            'destructive': '🛑 破坏性操作（可能造成数据丢失）',
-            'sensitive': '🔑 权限相关操作（可能影响系统安全）',
-            'network': '🌐 网络相关操作（可能涉及外部连接）'
-        }
-        
-        categories = "\n".join(
-            [category_mapping.get(t, t) for t in danger_types]
-        )
-        
-        return messagebox.askyesno(
-            "高级安全警告",
-            f"检测到以下类型危险命令：\n\n{categories}\n\n"
-            f"即将执行的命令：\n{command}\n\n"
-            "是否确认继续执行？\n"
-            "（建议确认完全理解命令作用后再继续）",
-            parent=self,
-            icon='warning'
-        )
-
-    def _confirm_file_operation(self):
-        """文件操作二次确认"""
-        return messagebox.askyesno(
-            "文件操作确认",
-            "即将执行包含文件删除/修改的操作\n是否确认继续？",
-            parent=self,
-            icon='warning'
-        )
-
-    def show_context(self):
-        """显示上下文窗口"""
-        context_win = Toplevel(self)
-        context_win.title("操作上下文")
-        
-        text_area = ScrolledText(
-            context_win,
-            wrap=WORD,
-            font=('Consolas', 9),
-            padx=10,
-            pady=10
-        )
-        text_area.pack(fill=BOTH, expand=True)
-        
-        context_text = "\n\n".join(
-            [f"操作 {idx+1}:\n• 请求: {ctx['request']}\n• 命令: {ctx['command']}\n• 结果: {ctx['result'][:200]}"
-             for idx, ctx in enumerate(self.executor.context)]
-        ) or "暂无上下文记录"
-        
-        text_area.insert(END, "最近5条操作上下文：\n\n" + context_text)
-        text_area.config(state='disabled')
-
-    def clear_context(self):
-        """清除上下文"""
-        self.executor.context.clear()
-        messagebox.showinfo("提示", "已清除所有操作上下文", parent=self)
-
+            self._toggle_controls()
+    
     def show_error(self, message):
         """显示错误信息"""
-        messagebox.showerror("错误", message, parent=self)
-
-    def on_close(self):
-        """关闭窗口事件"""
-        if self.running and not messagebox.askokcancel(
-            "确认退出", 
-            "当前有任务正在执行，确定要退出吗？",
-            parent=self
-        ):
-            return
-        self.destroy()
+        messagebox.showerror("系统错误", message, parent=self)
+        self.append_output(f"错误：{message}", 'error')
 
 if __name__ == "__main__":
-    app = Application()
+    app = ModernUI()
     app.mainloop()

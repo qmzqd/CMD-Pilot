@@ -1,0 +1,140 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "platform",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "platform",
+        "description": "platform",
+        "detail": "platform",
+        "documentation": {}
+    },
+    {
+        "label": "OpenAI",
+        "importPath": "openai",
+        "description": "openai",
+        "isExtraImport": true,
+        "detail": "openai",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "scrolledtext",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ThreadPoolExecutor",
+        "importPath": "concurrent.futures",
+        "description": "concurrent.futures",
+        "isExtraImport": true,
+        "detail": "concurrent.futures",
+        "documentation": {}
+    },
+    {
+        "label": "ModernScrolledText",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class ModernScrolledText(scrolledtext.ScrolledText):\n    \"\"\"现代化滚动文本框组件\"\"\"\n    def __init__(self, master, **kwargs):\n        super().__init__(\n            master,\n            wrap=tk.WORD,\n            font=('Segoe UI', 10),\n            padx=12,\n            pady=12,\n            highlightthickness=0,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "KimiClient",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class KimiClient:\n    def __init__(self):\n        self.client = OpenAI(\n            api_key=os.getenv(\"MOONSHOT_API_KEY\"),\n            base_url=\"https://api.moonshot.cn/v1\"\n        )\n        self._init_system_prompt()\n    def _init_system_prompt(self):\n        \"\"\"初始化系统提示词\"\"\"\n        self.messages = [{",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "CommandEngine",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class CommandEngine:\n    SAFETY_LEVELS = {\n        'destructive': {'keywords': ['rm', 'del', 'shutdown', 'format', 'dd'], 'color': '#EF5350'},\n        'privilege': {'keywords': ['sudo', 'chmod', 'chown', 'passwd'], 'color': '#FFA726'},\n        'network': {'keywords': ['curl', 'wget', 'ssh', 'scp'], 'color': '#42A5F5'},\n        'system': {'keywords': ['reg', 'diskpart', 'service'], 'color': '#AB47BC'}\n    }\n    def __init__(self):\n        self.context = []\n        self.history = []",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "ModernUI",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class ModernUI(tk.Tk):\n    def __init__(self):\n        super().__init__()\n        self.engine = CommandEngine()\n        self.running = False\n        self._configure_window()\n        self._create_widgets()\n        self._setup_style()\n        self._bind_shortcuts()\n    def _configure_window(self):",
+        "detail": "main",
+        "documentation": {}
+    }
+]
