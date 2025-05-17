@@ -65,30 +65,6 @@
         "documentation": {}
     },
     {
-        "label": "ttk",
-        "importPath": "tkinter",
-        "description": "tkinter",
-        "isExtraImport": true,
-        "detail": "tkinter",
-        "documentation": {}
-    },
-    {
-        "label": "messagebox",
-        "importPath": "tkinter",
-        "description": "tkinter",
-        "isExtraImport": true,
-        "detail": "tkinter",
-        "documentation": {}
-    },
-    {
-        "label": "scrolledtext",
-        "importPath": "tkinter",
-        "description": "tkinter",
-        "isExtraImport": true,
-        "detail": "tkinter",
-        "documentation": {}
-    },
-    {
         "label": "List",
         "importPath": "typing",
         "description": "typing",
@@ -249,62 +225,6 @@
         "documentation": {}
     },
     {
-        "label": "Any",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Dict",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "List",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Optional",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Tuple",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "TypedDict",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Union",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
         "label": "logging",
         "kind": 6,
         "isExtraImport": true,
@@ -395,22 +315,6 @@
         "documentation": {}
     },
     {
-        "label": "Future",
-        "importPath": "concurrent.futures",
-        "description": "concurrent.futures",
-        "isExtraImport": true,
-        "detail": "concurrent.futures",
-        "documentation": {}
-    },
-    {
-        "label": "ThreadPoolExecutor",
-        "importPath": "concurrent.futures",
-        "description": "concurrent.futures",
-        "isExtraImport": true,
-        "detail": "concurrent.futures",
-        "documentation": {}
-    },
-    {
         "label": "partial",
         "importPath": "functools",
         "description": "functools",
@@ -428,22 +332,6 @@
     },
     {
         "label": "lru_cache",
-        "importPath": "functools",
-        "description": "functools",
-        "isExtraImport": true,
-        "detail": "functools",
-        "documentation": {}
-    },
-    {
-        "label": "lru_cache",
-        "importPath": "functools",
-        "description": "functools",
-        "isExtraImport": true,
-        "detail": "functools",
-        "documentation": {}
-    },
-    {
-        "label": "partial",
         "importPath": "functools",
         "description": "functools",
         "isExtraImport": true,
@@ -548,432 +436,219 @@
         "documentation": {}
     },
     {
-        "label": "threading",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "threading",
-        "description": "threading",
-        "detail": "threading",
-        "documentation": {}
-    },
-    {
-        "label": "argparse",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "argparse",
-        "description": "argparse",
-        "detail": "argparse",
-        "documentation": {}
-    },
-    {
-        "label": "load_dotenv",
-        "importPath": "dotenv",
-        "description": "dotenv",
-        "isExtraImport": true,
-        "detail": "dotenv",
-        "documentation": {}
-    },
-    {
-        "label": "sys",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
-        "documentation": {}
-    },
-    {
-        "label": "CommandEngine",
-        "importPath": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "description": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "documentation": {}
-    },
-    {
-        "label": "CommandContext",
-        "importPath": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "description": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.core.command_engine",
-        "documentation": {}
-    },
-    {
-        "label": "SecurityError",
-        "importPath": "CMD_Pilot.cmd_pilot.security",
-        "description": "CMD_Pilot.cmd_pilot.security",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.security",
-        "documentation": {}
-    },
-    {
-        "label": "MODEL_CONFIGS",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "UI_THEME",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "UI_STYLE",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_SETTINGS",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "ALLOWED_COMMANDS",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "ModelConfig",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "ThemeConfig",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
-        "label": "UIStyle",
-        "importPath": "CMD_Pilot.cmd_pilot.config",
-        "description": "CMD_Pilot.cmd_pilot.config",
-        "isExtraImport": true,
-        "detail": "CMD_Pilot.cmd_pilot.config",
-        "documentation": {}
-    },
-    {
         "label": "CommandHistory",
         "kind": 6,
-        "importPath": "cmd_pilot.ui.components.command_history",
-        "description": "cmd_pilot.ui.components.command_history",
+        "importPath": "ui.components.command_history",
+        "description": "ui.components.command_history",
         "peekOfCode": "class CommandHistory(Frame):\n    \"\"\"Component for displaying and managing command history\"\"\"\n    def __init__(self, master, max_history: int = 100, **kwargs):\n        super().__init__(master, **kwargs)\n        self.max_history = max_history\n        self._init_ui()\n        self.history: List[str] = []\n    def _init_ui(self):\n        self.listbox = Listbox(self)\n        self.scrollbar = Scrollbar(self, orient=\"vertical\")",
-        "detail": "cmd_pilot.ui.components.command_history",
+        "detail": "ui.components.command_history",
         "documentation": {}
     },
     {
         "label": "ConsolePanel",
         "kind": 6,
-        "importPath": "cmd_pilot.ui.components.console_panel",
-        "description": "cmd_pilot.ui.components.console_panel",
+        "importPath": "ui.components.console_panel",
+        "description": "ui.components.console_panel",
         "peekOfCode": "class ConsolePanel(Frame):\n    \"\"\"Enhanced console panel with improved error handling and async support.\"\"\"\n    def __init__(self, master, **kwargs):\n        super().__init__(master, **kwargs)\n        self._init_ui()\n        self._setup_bindings()\n        self._configure_tags()\n    def _init_ui(self):\n        # Main text widget with improved scrolling\n        self.text = Text(self, wrap='word', undo=True)",
-        "detail": "cmd_pilot.ui.components.console_panel",
+        "detail": "ui.components.console_panel",
         "documentation": {}
     },
     {
         "label": "ModernUI",
         "kind": 6,
-        "importPath": "cmd_pilot.ui.main_window",
-        "description": "cmd_pilot.ui.main_window",
+        "importPath": "ui.main_window",
+        "description": "ui.main_window",
         "peekOfCode": "class ModernUI(tk.Tk):\n    def __init__(self):\n        super().__init__()\n        self._init_components()\n        self.command_validator = CommandValidator()\n    def _init_components(self):\n        \"\"\"Initialize all UI components using factory methods\"\"\"\n        self._init_top_bar()\n        self._init_console()\n        self._init_command_history()",
-        "detail": "cmd_pilot.ui.main_window",
+        "detail": "ui.main_window",
         "documentation": {}
     },
     {
         "label": "AsyncExecutor",
         "kind": 6,
-        "importPath": "cmd_pilot.utils.async_executor",
-        "description": "cmd_pilot.utils.async_executor",
+        "importPath": "utils.async_executor",
+        "description": "utils.async_executor",
         "peekOfCode": "class AsyncExecutor:\n    def __init__(self):\n        self.loop = asyncio.new_event_loop()\n        self.executor = ThreadPoolExecutor(max_workers=4)\n    async def run_blocking(self, func, *args):\n        \"\"\"Execute blocking functions asynchronously\"\"\"\n        return await self.loop.run_in_executor(\n            self.executor, \n            partial(func, *args)\n        )",
-        "detail": "cmd_pilot.utils.async_executor",
+        "detail": "utils.async_executor",
         "documentation": {}
     },
     {
         "label": "ErrorHandler",
         "kind": 6,
-        "importPath": "cmd_pilot.utils.error_handler",
-        "description": "cmd_pilot.utils.error_handler",
+        "importPath": "utils.error_handler",
+        "description": "utils.error_handler",
         "peekOfCode": "class ErrorHandler:\n    \"\"\"错误处理工具类\"\"\"\n    @staticmethod\n    def log_error(error: Exception, context: str = None) -> None:\n        \"\"\"记录错误日志\n        Args:\n            error: 异常对象\n            context: 错误上下文信息\n        \"\"\"\n        error_msg = f\"[{context}] {str(error)}\" if context else str(error)",
-        "detail": "cmd_pilot.utils.error_handler",
+        "detail": "utils.error_handler",
         "documentation": {}
     },
     {
         "label": "SecurityError",
         "kind": 6,
-        "importPath": "cmd_pilot.utils.security",
-        "description": "cmd_pilot.utils.security",
+        "importPath": "utils.security",
+        "description": "utils.security",
         "peekOfCode": "class SecurityError(Exception):\n    \"\"\"安全验证异常\"\"\"\n    def __init__(self, message: str, command: str = None, risk_level: str = None):\n        super().__init__(message)\n        self.command = command\n        self.risk_level = risk_level  # 新增风险等级属性\nclass CommandValidator:\n    \"\"\"命令验证器\"\"\"\n    PRIVILEGE_PATTERNS = {\n        'privilege_escalation': [",
-        "detail": "cmd_pilot.utils.security",
+        "detail": "utils.security",
         "documentation": {}
     },
     {
         "label": "CommandValidator",
         "kind": 6,
-        "importPath": "cmd_pilot.utils.security",
-        "description": "cmd_pilot.utils.security",
+        "importPath": "utils.security",
+        "description": "utils.security",
         "peekOfCode": "class CommandValidator:\n    \"\"\"命令验证器\"\"\"\n    PRIVILEGE_PATTERNS = {\n        'privilege_escalation': [\n            r'\\bsudo\\s+\\w+',\n            r'\\bpkexec\\s+\\w+',\n            r'\\bdoas\\s+\\w+',\n            r'\\bStart-Process\\s+.*-Verb\\s+RunAs',\n            r'[;|&amp;]\\s*[;|&amp;]'  # 严格匹配命令连接符\n        ],",
-        "detail": "cmd_pilot.utils.security",
+        "detail": "utils.security",
         "documentation": {}
     },
     {
         "label": "CommandContext",
         "kind": 6,
-        "importPath": "cmd_pilot.command_engine",
-        "description": "cmd_pilot.command_engine",
+        "importPath": "command_engine",
+        "description": "command_engine",
         "peekOfCode": "class CommandContext:\n    \"\"\"Context manager for command execution environment\"\"\"\n    def __init__(self):\n        self.env = os.environ.copy()\n        self.cwd = os.getcwd()\n        self.umask = os.umask(0o077)  # 设置严格默认权限\n        os.umask(self.umask)  # 还原原始umask\n    def __enter__(self):\n        os.chdir(tempfile.mkdtemp())  # 进入临时目录\n        return self",
-        "detail": "cmd_pilot.command_engine",
+        "detail": "command_engine",
         "documentation": {}
     },
     {
         "label": "CommandEngine",
         "kind": 6,
-        "importPath": "cmd_pilot.command_engine",
-        "description": "cmd_pilot.command_engine",
+        "importPath": "command_engine",
+        "description": "command_engine",
         "peekOfCode": "class CommandEngine:\n    \"\"\"Enhanced command engine with AI generation and security validation\"\"\"\n    def __init__(self, model_id: str):\n        if model_id not in MODEL_CONFIGS:\n            raise ValueError(f\"Unsupported model: {model_id}\")\n        self.model_id = model_id\n        self.config = MODEL_CONFIGS[model_id]\n        self._validate_env()\n        self.validator = CommandValidator()\n    def _validate_env(self):",
-        "detail": "cmd_pilot.command_engine",
+        "detail": "command_engine",
         "documentation": {}
     },
     {
         "label": "ModelConfig",
         "kind": 6,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "class ModelConfig(TypedDict):\n    base_url: str\n    model: str\n    name: str\n    env_vars: List[str]\n    api_type: str\nclass SafetyRule(TypedDict):\n    patterns: List[str]\n    color: str\nclass ThemeConfig(TypedDict):",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "SafetyRule",
         "kind": 6,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "class SafetyRule(TypedDict):\n    patterns: List[str]\n    color: str\nclass ThemeConfig(TypedDict):\n    bg: str\n    text: str\n    text_secondary: str\n    primary: str\n    success: str\n    warning: str",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "ThemeConfig",
         "kind": 6,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "class ThemeConfig(TypedDict):\n    bg: str\n    text: str\n    text_secondary: str\n    primary: str\n    success: str\n    warning: str\n    error: str\n    font_family: str\n    font_size: int",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "UIStyle",
         "kind": 6,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "class UIStyle(TypedDict):\n    TButton: Dict[str, Any]\n    TCombobox: Dict[str, Any]\nMODEL_CONFIGS = {\n    \"moonshot\": {\n        \"base_url\": \"https://api.moonshot.cn/v1\",\n        \"model\": \"moonshot-v1-8k\",\n        \"name\": \"Moonshot AI\",\n        \"env_vars\": [\"MOONSHOT_API_KEY\"],\n        \"api_type\": \"openai\"",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "MODEL_CONFIGS",
         "kind": 5,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "MODEL_CONFIGS = {\n    \"moonshot\": {\n        \"base_url\": \"https://api.moonshot.cn/v1\",\n        \"model\": \"moonshot-v1-8k\",\n        \"name\": \"Moonshot AI\",\n        \"env_vars\": [\"MOONSHOT_API_KEY\"],\n        \"api_type\": \"openai\"\n    },\n    \"spark\": {\n        \"base_url\": \"https://spark-api.xf-yun.com/v1.1\",",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "UI_THEME",
         "kind": 5,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "UI_THEME = {\n    \"bg\": \"#f5f5f5\",\n    \"text\": \"#333333\",\n    \"text_secondary\": \"#666666\",\n    \"primary\": \"#4a6baf\",\n    \"success\": \"#5cb85c\",\n    \"warning\": \"#f0ad4e\",\n    \"error\": \"#d9534f\",\n    \"font_family\": \"Microsoft YaHei\",\n    \"font_size\": 12",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "UI_STYLE",
         "kind": 5,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "UI_STYLE = {\n    \"TButton\": {\n        \"padding\": (10, 5),\n        \"borderwidth\": 1,\n        \"relief\": \"raised\"\n    },\n    \"TCombobox\": {\n        \"padding\": (5, 2),\n        \"borderwidth\": 1\n    }",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "DEFAULT_SETTINGS",
         "kind": 5,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "DEFAULT_SETTINGS = {\n    \"show_raw_output\": False,\n    \"max_risk_level\": \"medium\"\n}\nALLOWED_COMMANDS = [\"ls\", \"cd\", \"pwd\", \"cat\", \"grep\", \"find\", \"echo\"]",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "ALLOWED_COMMANDS",
         "kind": 5,
-        "importPath": "cmd_pilot.config",
-        "description": "cmd_pilot.config",
+        "importPath": "config",
+        "description": "config",
         "peekOfCode": "ALLOWED_COMMANDS = [\"ls\", \"cd\", \"pwd\", \"cat\", \"grep\", \"find\", \"echo\"]",
-        "detail": "cmd_pilot.config",
+        "detail": "config",
         "documentation": {}
     },
     {
         "label": "ErrorHandler",
         "kind": 6,
-        "importPath": "cmd_pilot.error_handler",
-        "description": "cmd_pilot.error_handler",
+        "importPath": "error_handler",
+        "description": "error_handler",
         "peekOfCode": "class ErrorHandler:\n    @classmethod\n    def handle_api_error(cls, exc: Exception) -> str:\n        \"\"\"Enhanced error handler for API-related exceptions\"\"\"\n        error_map = {\n            requests.Timeout: \"API请求超时，请检查网络连接\",\n            requests.HTTPError: lambda e: f\"HTTP错误: {e.response.status_code}\",\n            json.JSONDecodeError: \"无效的API响应格式\"\n        }\n        return error_map.get(type(exc), str(exc))",
-        "detail": "cmd_pilot.error_handler",
+        "detail": "error_handler",
         "documentation": {}
     },
     {
         "label": "CommandValidator",
         "kind": 6,
-        "importPath": "cmd_pilot.security",
-        "description": "cmd_pilot.security",
+        "importPath": "security",
+        "description": "security",
         "peekOfCode": "class CommandValidator:\n    \"\"\"Centralized command validation with comprehensive security checks\"\"\"\n    BLACKLISTED_PATTERNS = [\n        # Combined command control patterns\n        r'[&|;]\\s*[&|;]',  # command chaining/separators\n        r'[`$]\\s*\\(.*\\)|\\$\\{.*\\}',  # command substitution\n        r'\\|\\s*[a-z]',  # piping to commands\n        # Dangerous operations\n        r'(rm|del)\\s+-[rf]|[sq]',  # recursive/file deletion\n        r'chmod\\s+[0-7]{3,4}',  # permission changes",
-        "detail": "cmd_pilot.security",
+        "detail": "security",
         "documentation": {}
     },
     {
         "label": "SecurityError",
         "kind": 6,
-        "importPath": "cmd_pilot.security",
-        "description": "cmd_pilot.security",
+        "importPath": "security",
+        "description": "security",
         "peekOfCode": "class SecurityError(Exception):\n    \"\"\"Custom exception for security violations\"\"\"\n    def __init__(self, message: str, command: str = None):\n        super().__init__(message)\n        self.command = command\n        self.message = f\"Security violation: {message}\"\n        if command:\n            self.message += f\" in command: {command}\"\ndef sanitize_command(command: str) -> str:\n    \"\"\"Centralized command sanitization with strict validation\"\"\"",
-        "detail": "cmd_pilot.security",
+        "detail": "security",
         "documentation": {}
     },
     {
         "label": "sanitize_command",
         "kind": 2,
-        "importPath": "cmd_pilot.security",
-        "description": "cmd_pilot.security",
+        "importPath": "security",
+        "description": "security",
         "peekOfCode": "def sanitize_command(command: str) -> str:\n    \"\"\"Centralized command sanitization with strict validation\"\"\"\n    command = command.strip()\n    validator = CommandValidator()\n    if not validator.is_safe(command):\n        risk = validator.assess_risk(command)\n        raise SecurityError(\n            f\"Command rejected (risk: {risk['level']})\", \n            command\n        )",
-        "detail": "cmd_pilot.security",
+        "detail": "security",
         "documentation": {}
     },
     {
         "label": "log_security_event",
         "kind": 2,
-        "importPath": "cmd_pilot.security",
-        "description": "cmd_pilot.security",
+        "importPath": "security",
+        "description": "security",
         "peekOfCode": "def log_security_event(event_type: str, details: str):\n    \"\"\"Centralized security logging with stack trace\"\"\"\n    logger = logging.getLogger('security')\n    logger.warning(\n        f\"Security event [{event_type}]: {details}\\n\"\n        f\"Stack trace: {''.join(traceback.format_stack())}\"\n    )\ndef validate_environment() -> bool:\n    \"\"\"Check for secure execution environment\"\"\"\n    try:",
-        "detail": "cmd_pilot.security",
+        "detail": "security",
         "documentation": {}
     },
     {
         "label": "validate_environment",
         "kind": 2,
-        "importPath": "cmd_pilot.security",
-        "description": "cmd_pilot.security",
+        "importPath": "security",
+        "description": "security",
         "peekOfCode": "def validate_environment() -> bool:\n    \"\"\"Check for secure execution environment\"\"\"\n    try:\n        # Check for restricted PATH\n        path = os.environ.get('PATH', '')\n        if '/usr/local/sbin' in path or '/usr/sbin' in path:\n            return False\n        # Check for safe umask\n        if os.umask(0) != 0o077:\n            return False",
-        "detail": "cmd_pilot.security",
-        "documentation": {}
-    },
-    {
-        "label": "EnhancedConfig",
-        "kind": 6,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "class EnhancedConfig:\n    \"\"\"增强配置类，提供配置访问接口\"\"\"\n    MODEL_CONFIGS = MODEL_CONFIGS\n    UI_THEME = UI_THEME\n    UI_STYLE = UI_STYLE\n    DEFAULT_SETTINGS = DEFAULT_SETTINGS\n    ALLOWED_COMMANDS = ALLOWED_COMMANDS\n    lock = threading.Lock()  # 添加线程锁\n    @classmethod\n    @lru_cache(maxsize=32)",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "AsyncExecutor",
-        "kind": 6,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "class AsyncExecutor:\n    \"\"\"Helper class for async operations\"\"\"\n    def __init__(self):\n        self.loop = asyncio.new_event_loop()\n        self.executor = ThreadPoolExecutor(max_workers=4)\n    async def run_blocking(self, func, *args):\n        return await self.loop.run_in_executor(\n            self.executor, \n            partial(func, *args)\n        )",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "PlaceholderText",
-        "kind": 6,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "class PlaceholderText(tk.Text):\n    \"\"\"带placeholder提示的文本框\"\"\"\n    def __init__(\n        self, \n        master: Optional[tk.Widget] = None, \n        placeholder: Optional[str] = None, \n        **kwargs: Any\n    ) -> None:\n        super().__init__(master, **kwargs)\n        self.placeholder = placeholder",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "ToolTip",
-        "kind": 6,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "class ToolTip:\n    \"\"\"悬浮提示工具类\"\"\"\n    def __init__(self, widget: tk.Widget, text: str) -> None:\n        self.widget = widget\n        self.text = text\n        self.tip_window = None\n        widget.bind(\"<Enter>\", self.show_tip)\n        widget.bind(\"<Leave>\", self.hide_tip)\n    def show_tip(self, event: Optional[tk.Event] = None) -> None:\n        x, y, _, _ = self.widget.bbox(\"insert\")",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "ModernUI",
-        "kind": 6,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "class ModernUI(tk.Tk):\n    def __init__(self, default_model: str = \"moonshot\") -> None:\n        super().__init__()\n        self.title(\"智能命令助手\")\n        self.geometry(\"1000x700\")\n        self.default_model = default_model\n        self.async_executor = AsyncExecutor()\n        # 先初始化样式，再设置关闭协议\n        if not self._init_styles():\n            messagebox.showerror(\"错误\", \"UI样式初始化失败\")",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "setup_logging",
-        "kind": 2,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "def setup_logging():\n    \"\"\"配置日志系统\"\"\"\n    logging.basicConfig(\n        level=logging.INFO,\n        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',\n        handlers=[\n            logging.FileHandler('app.log'),\n            logging.StreamHandler()\n        ]\n    )",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "check_config",
-        "kind": 2,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "def check_config():\n    \"\"\"检查必要配置\"\"\"\n    required_vars = set()\n    for config in EnhancedConfig.MODEL_CONFIGS.values():\n        required_vars.update(config['env_vars'])\n    missing = [var for var in required_vars if not os.getenv(var)]\n    if missing:\n        raise EnvironmentError(f\"缺少必需环境变量: {', '.join(missing)}\")\ndef parse_args():\n    \"\"\"解析命令行参数\"\"\"",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "parse_args",
-        "kind": 2,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "def parse_args():\n    \"\"\"解析命令行参数\"\"\"\n    parser = argparse.ArgumentParser(description='AI命令行助手')\n    parser.add_argument('--debug', action='store_true', help='启用调试模式')\n    parser.add_argument('--model', choices=EnhancedConfig.MODEL_CONFIGS.keys(), \n                       default='moonshot', help='选择AI模型')\n    return parser.parse_args()\ndef main():\n    \"\"\"主程序入口\"\"\"\n    args = parse_args()",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "main",
-        "kind": 2,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "def main():\n    \"\"\"主程序入口\"\"\"\n    args = parse_args()\n    setup_logging()\n    load_dotenv()\n    try:\n        check_config()\n        app = ModernUI(default_model=args.model)\n        app.mainloop()\n    except Exception as e:",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "project_root",
-        "kind": 5,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "project_root = os.path.dirname(os.path.abspath(__file__))\nsys.path.append(project_root)\nfrom CMD_Pilot.cmd_pilot.core.command_engine import CommandEngine, CommandContext\nfrom CMD_Pilot.cmd_pilot.security import SecurityError\n# ========== 配置部分 ==========\nfrom CMD_Pilot.cmd_pilot.config import (\n    MODEL_CONFIGS, \n    UI_THEME, \n    UI_STYLE, \n    DEFAULT_SETTINGS, ",
-        "detail": "main",
+        "detail": "security",
         "documentation": {}
     }
 ]

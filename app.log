@@ -1,0 +1,28 @@
+2025-05-16 22:57:09,236 - concurrent.futures - ERROR - exception calling callback for <Future at 0x11a65a6d130 state=finished returned coroutine>
+Traceback (most recent call last):
+  File "Z:\python\lib\concurrent\futures\_base.py", line 409, in add_done_callback
+    fn(self)
+  File "d:\桌面\CMD-Pilot\main.py", line 882, in _handle_result
+    if "error" in result:
+TypeError: argument of type 'coroutine' is not iterable
+2025-05-16 22:57:14,490 - concurrent.futures - ERROR - exception calling callback for <Future at 0x11a65a6d5e0 state=finished returned coroutine>
+Traceback (most recent call last):
+  File "Z:\python\lib\concurrent\futures\_base.py", line 409, in add_done_callback
+    fn(self)
+  File "d:\桌面\CMD-Pilot\main.py", line 882, in _handle_result
+    if "error" in result:
+TypeError: argument of type 'coroutine' is not iterable
+2025-05-16 22:58:06,436 - concurrent.futures - ERROR - exception calling callback for <Future at 0x262068ae130 state=finished returned coroutine>
+Traceback (most recent call last):
+  File "Z:\python\lib\concurrent\futures\_base.py", line 409, in add_done_callback
+    fn(self)
+  File "d:\桌面\CMD-Pilot\tempCodeRunnerFile.py", line 882, in _handle_result
+    if "error" in result:
+TypeError: argument of type 'coroutine' is not iterable
+2025-05-16 23:01:07,907 - concurrent.futures - ERROR - exception calling callback for <Future at 0x1d7ef88d130 state=finished returned coroutine>
+Traceback (most recent call last):
+  File "Z:\python\lib\concurrent\futures\_base.py", line 409, in add_done_callback
+    fn(self)
+  File "d:\桌面\CMD-Pilot\main.py", line 882, in _handle_result
+    if "error" in result:
+TypeError: argument of type 'coroutine' is not iterable

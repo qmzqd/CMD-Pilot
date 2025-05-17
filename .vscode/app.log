@@ -1,0 +1,18 @@
+2025-05-11 00:14:28,759 - root - CRITICAL - 应用程序启动失败: type object 'EnhancedConfig' has no attribute 'MODERN_STYLE'
+Traceback (most recent call last):
+  File "d:\桌面\CMD-Pilot\main.py", line 45, in main
+    app = ModernUI(default_model=args.model)
+  File "d:\桌面\CMD-Pilot\ui.py", line 77, in __init__
+    self._init_styles()
+  File "d:\桌面\CMD-Pilot\ui.py", line 121, in _init_styles
+    **EnhancedConfig.MODERN_STYLE["TButton"]
+AttributeError: type object 'EnhancedConfig' has no attribute 'MODERN_STYLE'
+2025-05-11 00:15:58,160 - root - CRITICAL - 应用程序启动失败: can't invoke "wm" command: application has been destroyed
+Traceback (most recent call last):
+  File "d:\桌面\CMD-Pilot\main.py", line 45, in main
+    app = ModernUI(default_model=args.model)
+  File "d:\桌面\CMD-Pilot\ui.py", line 78, in __init__
+    self.protocol("WM_DELETE_WINDOW", self._on_close)
+  File "Z:\python\lib\tkinter\__init__.py", line 2197, in wm_protocol
+    return self.tk.call(
+_tkinter.TclError: can't invoke "wm" command: application has been destroyed
